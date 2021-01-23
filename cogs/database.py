@@ -8,8 +8,8 @@ class _Database:
         self.members = self.db.table('members')
         self.teams = self.db.table('teams')
 
-    def register_team(self, members, team, channel_id):
-        team_id = self.teams.insert({'channel': channel_id, 'name': team})
+    def register_team(self, members, team, channel_id, voice_id):
+        team_id = self.teams.insert({'channel': channel_id, 'voice': voice_id, 'name': team})
         docs = [{'id': member.id, 'team': team_id} for member in members]
         self.members.insert_multiple(docs)
 
@@ -37,7 +37,7 @@ class _Database:
 
         self.teams.remove(doc_ids=[team.doc_id])
         self.members.remove(where('team') == team.doc_id)
-        return team['channel']
+        return (team['channel'], team['voice'])
 
     def user_team(self, user_discord_id):
         User = Query()

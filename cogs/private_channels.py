@@ -14,9 +14,11 @@ class PrivateChannels(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def unteam(self, ctx, team_name):
         if self.db.team_exists(team_name):
-            channel_id = self.db.remove_team(team_name)
+            channel_id, voice_id = self.db.remove_team(team_name)
             channel = self.client.get_channel(channel_id)
+            voice = self.client.get_channel(voice_id)
             await channel.delete()
+            await voice.delete()
             await ctx.send(f"Se ha eliminado el equipo \"{team_name}\".\n",
                            reference=ctx.message)
         else:
@@ -29,7 +31,8 @@ class PrivateChannels(commands.Cog):
         try:
             self.validate(members)
             channel_id = await self.create_team_channel(ctx.guild, members, name)
-            self.db.register_team(members, name, channel_id)
+            voice_id = await self.create_team_voice(ctx.guild, members, name)
+            self.db.register_team(members, name, channel_id, voice_id)
             await ctx.send(f"Bienvenidos equipo \"{name}\"!\n"
                             "Ya pueden acceder a su canal privado.", reference=ctx.message)
         except ValueError as ve:
@@ -71,6 +74,22 @@ class PrivateChannels(commands.Cog):
 
         channel = await guild.create_text_channel(team, overwrites=overwrites, category=category,
                                                   topic=f"Canal privado para el equipo {team}")
+
+        return channel.id
+
+    async def create_team_voice(self, guild, members, team):
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            guild.me: discord.PermissionOverwrite(read_messages=True)
+        }
+
+        for member in members:
+            overwrites[member] = discord.PermissionOverwrite(read_messages=True, create_instant_invite=False)
+
+        category = next(c for c in guild.categories if c.name == 'Teams')
+
+        channel = await guild.create_voice_channel(team, overwrites=overwrites, category=category,
+                                                   topic=f"Canal de voz privado para el equipo {team}")
 
         return channel.id
 

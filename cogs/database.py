@@ -48,6 +48,13 @@ class _Database:
 
         return None
 
+    def remove_user(self, user_discord_id):
+        User = Query()
+        found_user = self.members.get(User.id == user_discord_id)
+
+        if found_user:
+            self.members.remove(doc_ids=[found_user.doc_id])
+
 
 def Database():
     if _Database._instance is None:

@@ -1,6 +1,6 @@
 # Private Teams Bot
 
-Crea canales de texto privados para equipos.
+Crea canales de texto y voz, privados para equipos.
 
 ## Installation
 
@@ -17,14 +17,19 @@ echo DISCORD=<token> > .env
 
 ## Commands
 
-Para crear un equipo:
+Crear un equipo:
 ```
 !team "Nombre Equipo" @User1#1234 @User2#1234 @User3#1234 @User4#1234
 ```
 
-Para eliminar un equipo:
+Eliminar un equipo:
 ```
 !unteam "Nombre Equipo"
+```
+
+Sacar a miembro de un equipo:
+```
+!kick "Nombre Equipo" @User#1234
 ```
 
 ## License

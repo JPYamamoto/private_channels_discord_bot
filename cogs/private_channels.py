@@ -99,7 +99,7 @@ class PrivateChannels(commands.Cog):
         for member in members:
             overwrites[member] = discord.PermissionOverwrite(read_messages=True, create_instant_invite=False)
 
-        category = next(c for c in guild.categories if c.name == 'Teams')
+        category = next(c for c in guild.categories if c.name.lower() == 'equipos')
 
         channel = await guild.create_text_channel(team, overwrites=overwrites, category=category,
                                                   topic=f"Canal privado para el equipo {team}")

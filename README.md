@@ -2,9 +2,9 @@
 
 Crea canales de texto y voz, privados para equipos.
 
-## Installation
+## Instalación
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the package.
+Para instalar las bibliotecas requeridas, utiliza el manejador de paquetes [pip](https://pip.pypa.io/en/stable/).
 
 ```bash
 pip install -r requirements.txt
@@ -15,7 +15,7 @@ Crea el archivo `.env` con el token de Discord:
 echo DISCORD=<token> > .env
 ```
 
-## Commands
+## Comandos
 
 Crear un equipo:
 ```
@@ -24,13 +24,18 @@ Crear un equipo:
 
 Eliminar un equipo:
 ```
-!unteam "Nombre Equipo"
+!unteam #canal-equipo
 ```
 
 Sacar a miembro de un equipo:
 ```
-!kick "Nombre Equipo" @User#1234
+!kick #canal-equipo @User#1234
 ```
 
-## License
+Identificar usuario:
+```
+!usuario <email>
+```
+
+## Licencia
 [MIT](LICENSE)

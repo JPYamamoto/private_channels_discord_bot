@@ -18,6 +18,9 @@ class PrivateChannels(commands.Cog):
 
     @commands.command()
     async def team(self, ctx, name: str, members: commands.Greedy[discord.Member]):
+        if ctx.channel.name != "crear-equipo":
+            return
+
         members = list(set(members))
 
         try:
@@ -37,6 +40,9 @@ class PrivateChannels(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def unteam(self, ctx, team_channel: typing.Union[discord.TextChannel, discord.VoiceChannel]):
+        if ctx.channel.name != "crear-equipo" and ctx.channel.name != team_channel.name:
+            return
+
         name = team_channel.name
         channel = discord.utils.get(ctx.guild.channels, name=name)
         voice = discord.utils.get(ctx.guild.voice_channels, name=name)
@@ -57,6 +63,9 @@ class PrivateChannels(commands.Cog):
 
     @commands.command()
     async def kick(self, ctx, team: typing.Union[discord.TextChannel, discord.VoiceChannel], member: discord.Member):
+        if ctx.channel.name != "crear-equipo" and ctx.channel.name != team.name:
+            return
+
         try:
             is_admin = ctx.message.author.guild_permissions.administrator
             if not is_admin and not (ctx.message.author not in team.members):
@@ -83,6 +92,9 @@ class PrivateChannels(commands.Cog):
 
     @commands.command()
     async def usuario(self, ctx, email: str):
+        if ctx.channel.name != "check-in":
+            return
+
         await ctx.message.delete()
         email = email.strip()
 

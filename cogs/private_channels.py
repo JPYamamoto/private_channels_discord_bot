@@ -96,36 +96,6 @@ class PrivateChannels(commands.Cog):
             await ctx.send(message, reference=ctx.message)
 
 
-    @commands.command()
-    async def check(self, ctx, email: str):
-        if ctx.channel.name != "check-in":
-            return
-
-        await ctx.message.delete()
-        email = email.strip()
-
-        if email == '':
-            await ctx.send(f"No ingresaste un correo válido, {ctx.author.mention}")
-            return
-
-        if email.lower() in self.emails_mentores:
-            role1 = discord.utils.get(ctx.guild.roles, name= 'mentor')
-            role_del = discord.utils.get(ctx.guild.roles, name= 'no-check')
-            await ctx.message.author.add_roles(role1)
-            await ctx.message.author.remove_roles(role_del)
-            channel = discord.utils.get(ctx.guild.channels, name='codigo-de-conducta')
-            await ctx.send(f"Bienvenido {ctx.message.author.mention}! Por favor, dirígete al canal {channel.mention}.")
-        elif email.lower() in self.emails_registrados:
-            role = discord.utils.get(ctx.guild.roles, name= 'noauth')
-            role_del = discord.utils.get(ctx.guild.roles, name= 'no-check')
-            await ctx.message.author.add_roles(role)
-            await ctx.message.author.remove_roles(role_del)
-            channel = discord.utils.get(ctx.guild.channels, name='codigo-de-conducta')
-            await ctx.send(f"Bienvenido {ctx.message.author.mention}! Por favor, dirígete al canal {channel.mention}.")
-        else:
-            await ctx.send(f"{ctx.author.mention}, no tenemos un usuario registrado con el email que ingresaste.")
-
-
     async def create_team_channel(self, guild, members, team):
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(read_messages=False),
